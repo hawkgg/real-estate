@@ -1,8 +1,8 @@
 <template>
-    <div v-if="village" class="container">
+    <template v-if="village">
         <div class="row">
             <div class="col d-flex justify-content-between flex-nowrap">
-                <router-link class="text-decoration-none d-flex align-items-center gap-1"
+                <router-link class="text-decoration-none d-flex align-items-center gap-1 py-3"
                              :to="{ name: 'villages.index' }">
                     <i class="fa-solid fa-chevron-left"></i> Назад
                 </router-link>
@@ -24,7 +24,7 @@
                 </td>
             </div>
         </div>
-        <div class="row mt-4">
+        <div class="row">
             <div class="col-xl-4">
                 <img v-if="village.photo" class="w-100" :src="VITE_APP_URL + village.photo.path" alt="">
                 <h3 v-else>Фото отсутствует</h3>
@@ -51,17 +51,17 @@
                 </p>
             </div>
         </div>
-    </div>
-    <div v-else class="pt-5 mt-5 d-flex justify-content-center">
+    </template>
+    <div v-else-if="loading" class="pt-5 mt-5 d-flex justify-content-center">
         <loader :loading="loading" :color="'#0d6efd'" :size="'40px'"></loader>
     </div>
-    <p v-if="!loading && !village" class="text-danger">Произошла ошибка! Пожалуйста, перезагрузите страницу или попробуйте позже.</p>
+    <p v-else class="text-danger">Произошла ошибка! Пожалуйста, перезагрузите страницу или попробуйте позже.</p>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import VillageService from "@/services/VillageService";
-import loader from 'vue-spinner/src/MoonLoader.vue'
+import loader from 'vue-spinner/src/MoonLoader.vue';
 export default {
     name: "VillagesShow",
     components: {
@@ -80,6 +80,9 @@ export default {
     async created() {
         this.village = await VillageService.getVillage(this.$route.params.village)
         this.loading = false
+        if (!this.village) {
+            this.$router.push({ name: 'NotFound' })
+        }
     },
     methods: {
         async deleteVillage(id) {

@@ -1,11 +1,7 @@
 <template>
     <Navbar></Navbar>
     <div class="container">
-        <div class="row">
-            <div class="col mt-4">
-                <router-view></router-view>
-            </div>
-        </div>
+        <router-view></router-view>
     </div>
 </template>
 

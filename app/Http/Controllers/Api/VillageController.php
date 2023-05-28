@@ -63,9 +63,6 @@ class VillageController extends Controller
             $village->presentation_id = $presentation->id;
         }
         $village->save();
-
-        return redirect()->route('villages.index')
-            ->with('success', 'Посёлок успешно добавлен.');
     }
 
     /**

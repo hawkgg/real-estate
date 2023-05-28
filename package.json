@@ -23,7 +23,7 @@
         "@fortawesome/fontawesome-free": "^6.4.0",
         "jquery": "^3.7.0",
         "path": "^0.12.7",
-        "slick-carousel": "^1.8.1",
+        "swiper": "^9.3.2",
         "transform-url": "^2.0.0",
         "vue-spinner": "^1.0.4"
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\HouseController;
 use App\Http\Controllers\Api\VillageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('villages', VillageController::class);
+    Route::resource('houses', HouseController::class);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

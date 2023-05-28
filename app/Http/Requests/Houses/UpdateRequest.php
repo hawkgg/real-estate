@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:houses,name,'.$this->id,
+            'name' => 'required|max:255|unique:houses,name,'.$this->house,
             'price' => 'numeric|nullable|max:100000000',
             'currency' => 'numeric',
             'floors' => 'numeric|min:0|max:150|nullable',

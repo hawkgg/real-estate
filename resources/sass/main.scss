@@ -2,6 +2,18 @@ h1 {
     font-size: 1.8rem;
 }
 
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    & > .container {
+        flex-grow: 1;
+        padding-top: 2em;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -96,29 +108,5 @@ input[type='number'] {
                 padding: .7rem .5rem;
             }
         }
-    }
-}
-
-.slick-slider {
-    .slick-track {
-        display: flex !important;
-        height: 300px;
-    }
-    .slick-list {
-        margin: 0 -10px;
-    }
-    .slick-slide {
-        height: inherit !important;
-        margin: 0 10px;
-        div {
-            height: 100%;
-            img {
-                object-fit: cover;
-                height: inherit;
-            }
-        }
-    }
-    .slick-dots li button::before {
-        font-size: 25px;
     }
 }

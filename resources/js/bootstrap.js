@@ -14,7 +14,6 @@ window.axios.defaults.headers.common['Accept'] = 'application/json';
 import jQuery from 'jquery';
 window.$ = jQuery;
 
-import 'slick-carousel';
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

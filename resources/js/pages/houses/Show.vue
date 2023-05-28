@@ -1,0 +1,105 @@
+<template>
+    <template v-if="house">
+        <div class="row">
+            <div class="col d-flex justify-content-between flex-nowrap">
+                <router-link class="text-decoration-none d-flex align-items-center gap-1 py-3"
+                             :to="{ name: 'houses.index' }">
+                    <i class="fa-solid fa-chevron-left"></i> Назад
+                </router-link>
+                <td>
+                    <div class="p-2 d-flex gap-2">
+                        <router-link  v-if="user?.permissions.some(p => p.name === 'house.edit')"
+                                     :to="{ name: 'houses.edit', params: { house: house.id } }"
+                                      class="btn btn-primary">
+                            <i class="fa-solid fa-pencil me-1"></i> Редактировать
+                        </router-link>
+
+                        <a v-if="user?.permissions.some(p => p.name === 'house.delete')"
+                           @click.prevent="deleteHouse(house.id)"
+                           class="btn btn-danger"
+                           href="">
+                            <i class="fa-solid fa-trash"></i> Удалить
+                        </a>
+                    </div>
+                </td>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <swiper v-if="house?.photos.length"
+                    :modules="Pagination"
+                    :slides-per-view="1"
+                    :space-between="20"
+                    :pagination="true"
+                >
+                    <swiper-slide v-for="photo in house.photos">
+                        <img class="w-100" :src="VITE_APP_URL + photo.path" alt="">
+                    </swiper-slide>
+                </swiper>
+                <h3 v-else>Фото отсутствует</h3>
+            </div>
+            <div class="col-xl-8 px-xl-3">
+                <p class="mb-2"><b>Название</b>: {{ house.name }}</p>
+                <p class="my-2"><b>Цена</b>: {{ house.default_price }} {{ house.default_currency.name }}</p>
+                <p class="my-2"><b>Этажность</b>: {{ house.floors ?? '–' }}</p>
+                <p class="my-2"><b>Спальни</b>: {{ house.bedrooms ?? '–' }}</p>
+                <p class="my-2"><b>Площадь</b>: {{ house.square ?? '–' }}</p>
+                <p class="my-2"><b>Тип объекта</b>: {{ house.estate_type.name.toLowerCase() }}</p>
+                <p class="my-2"><b>Посёлок</b>: {{ house.village.name }}</p>
+            </div>
+        </div>
+    </template>
+    <div v-else class="pt-5 mt-5 d-flex justify-content-center">
+        <loader :loading="loading" :color="'#0d6efd'" :size="'40px'"></loader>
+    </div>
+    <p v-if="!loading && !house" class="text-danger">Произошла ошибка! Пожалуйста, перезагрузите страницу или попробуйте позже.</p>
+</template>
+
+<script>
+import { mapState } from 'vuex';
+import HouseService from "@/services/HouseService";
+import loader from 'vue-spinner/src/MoonLoader.vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Pagination } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+const modules = [Pagination];
+
+export default {
+    name: "HousesShow",
+    components: {
+        loader,
+        Swiper,
+        SwiperSlide
+    },
+    computed: {
+        ...mapState('Main', ['user']),
+    },
+    data() {
+        return {
+            VITE_APP_URL: import.meta.env.VITE_APP_URL,
+            house: null,
+            loading: true,
+        }
+    },
+    async created() {
+        this.house = await HouseService.getHouse(this.$route.params.house)
+        this.loading = false
+        if (!this.house) {
+            this.$router.push({ name: 'NotFound' })
+        }
+    },
+    methods: {
+        async deleteHouse(id) {
+            await HouseService.deleteHouse(id)
+            this.$router.push({ name: 'houses.index' })
+        }
+    },
+
+}
+</script>
+
+<style scoped>
+
+</style>
