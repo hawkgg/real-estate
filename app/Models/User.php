@@ -42,4 +42,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getData(){
+        $roles = $this->roles;
+        $permissions = $this->permissions;
+        $roles->map(fn($role) =>$permissions->push(...$role->permissions));
+
+        return [
+            'data' => $this,
+            'permissions' => $permissions,
+            'roles' => $roles,
+        ];
+    }
 }

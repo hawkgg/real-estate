@@ -24,13 +24,13 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:villages,name,'.$this->id,
+            'name' => 'required|max:255|unique:villages,name,'.$this->village,
             'address' => 'required|max:255',
             'square' => 'numeric|between:0,1000',
             'phone' => 'numeric|nullable|max_digits:15',
-            'youtube_link' => 'nullable|max:255|url',
+            'youtube_link' => 'nullable|max:255', // TODO: add |url
             'photo' => 'mimes:jpeg,jpg,png',
-            'presentation' => 'mimes:pdf',
+            'presentation' => 'mimes:pdf|max:20480',
         ];
     }
 }

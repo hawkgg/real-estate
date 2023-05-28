@@ -17,7 +17,7 @@ return new class extends Migration
             $table->after('photo_id', function ($table) {
                 $table->unsignedBigInteger('presentation_id')->nullable();
             });
-            $table->foreign('presentation_id')->references('id')->on('presentations');
+            $table->foreign('presentation_id')->references('id')->on('presentations')->onDelete('set null');
         });
     }
 

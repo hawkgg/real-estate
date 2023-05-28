@@ -13,12 +13,18 @@
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
         "sass": "^1.62.1",
-        "vue": "^3.2.37"
+        "sass-loader": "^13.3.0",
+        "vue": "^3.3.4",
+        "vue-router": "^4.2.1",
+        "vue-template-compiler": "^2.7.14",
+        "vuex": "^4.1.0"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.4.0",
         "jquery": "^3.7.0",
         "path": "^0.12.7",
-        "slick-carousel": "^1.8.1"
+        "slick-carousel": "^1.8.1",
+        "transform-url": "^2.0.0",
+        "vue-spinner": "^1.0.4"
     }
 }
