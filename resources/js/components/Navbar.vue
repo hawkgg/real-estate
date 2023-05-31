@@ -1,9 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container gap-3">
-            <a class="navbar-brand me-4" href="/">RealEstate</a>
-<!--            TODO: replace links -->
-<!--            <router-link class="navbar-brand me-4" :to="{ name: 'home' }">RealEstate</router-link>-->
+            <router-link class="navbar-brand me-4" :to="{ name: 'home' }">RealEstate</router-link>
             <router-link class="nav-link" :to="{ name: 'villages.index' }">Посёлки</router-link>
             <router-link class="nav-link" :to="{ name: 'houses.index' }">Дома</router-link>
 
@@ -18,14 +16,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav me-auto">
-
-                </ul>
-
-                <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
-                    <!-- Authentication Links -->
                     <li v-if="user?.data" class="nav-item dropdown">
                         <a id="navbarDropdown"
                            class="nav-link dropdown-toggle"

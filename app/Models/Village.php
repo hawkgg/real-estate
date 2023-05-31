@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
 
 class Village extends Model
 {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     protected $fillable = [
         'name',
@@ -44,15 +44,6 @@ class Village extends Model
     {
         return $this->hasMany(House::class);
     }
-
-    /**
-     * Scope a query for square.
-     */
-//    public function scopeSquare(Builder $query, $param): void
-//    {
-//        $query->where('square', $param);
-//    }
-
 
     protected static function boot()
     {

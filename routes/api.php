@@ -19,7 +19,12 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('villages/filter', [VillageController::class, 'filter'])->name('villages.filter');
     Route::resource('villages', VillageController::class);
+
+    Route::get('houses/addditional-resources', [HouseController::class, 'getFilterAdditionalResources'])
+        ->name('houses.getFilterAdditionalResources');
+    Route::post('houses/filter', [HouseController::class, 'filter'])->name('houses.filter');
     Route::resource('houses', HouseController::class);
 });
 

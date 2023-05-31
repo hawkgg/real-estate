@@ -14,7 +14,6 @@ window.axios.defaults.headers.common['Accept'] = 'application/json';
 import jQuery from 'jquery';
 window.$ = jQuery;
 
-
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

@@ -2,22 +2,20 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
 
 class House extends Model
 {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     protected $fillable = [
         'name',
-        'price_rub',
-        'price_usd',
         'floors',
         'bedrooms',
         'square',
@@ -68,7 +66,15 @@ class House extends Model
      */
     public function getDefaultPriceAttribute()
     {
-        return $this->prices()->where('currency_id', $this->default_currency_id)->first()?->val;
+        return $this->prices()->where('currency_id', $this->default_currency_id)->first();
+    }
+
+    /**
+     * Get the default price of the house.
+     */
+    public function getOtherPricesAttribute()
+    {
+        return $this->prices()->whereNot('currency_id', $this->default_currency_id)->get();
     }
 
     protected static function boot()

@@ -3,33 +3,37 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Villages\StoreRequest;
-use App\Http\Requests\Villages\UpdateRequest;
-use App\Models\Photo;
-use App\Models\Presentation;
-use App\Models\Village;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Filters\VillageFilter;
+use App\Http\Requests\Villages\{FilterRequest, StoreRequest, UpdateRequest};
+use App\Http\Resources\VillageResource;
+use App\Models\{Photo, Presentation, Village};
+use Illuminate\Support\Facades\{App, Storage};
 use Illuminate\Support\Str;
 
 class VillageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a filtered listing of the resource.
      *
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function filter(FilterRequest $request)
     {
-        return Village::with('photo')->get();
+        $filter = App::make(VillageFilter::class, ['queryParams' => array_filter($request->validated())]);
+        $villages = Village::filter($filter);
+        if ($request->order_by && $request->order_dir) {
+            $villages = $villages->orderBy($request->order_by, $request->order_dir);
+        }
+        $villages = $villages->paginate(5, ['*'], 'page', $request->page);
+
+        return VillageResource::collection($villages);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param StoreRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return void
      */
     public function store(StoreRequest $request)
     {
@@ -40,25 +44,17 @@ class VillageController extends Controller
             $original_file_name = $request_photo->getClientOriginalName();
             $filename = Str::slug(pathinfo($original_file_name, PATHINFO_FILENAME));
             $ext = $request_photo->getClientOriginalExtension();
-            $photo = Photo::create([
-                'path' => "storage/villages/$village->id/$filename.$ext"
-            ]);
-            $request_photo->storeAs(
-                "public/villages/$village->id", "$filename.$ext"
-            );
 
+            $photo = Photo::create(['path' => "storage/villages/$village->id/$filename.$ext"]);
+            $request_photo->storeAs("public/villages/$village->id", "$filename.$ext");
             $village->photo_id = $photo->id;
         }
 
         $request_presentation = $request->file('presentation');
         if ($request_presentation) {
             $encoded_name = Str::slug($request_presentation->getClientOriginalName());
-            $presentation = Presentation::create([
-                'path' => 'storage/villages/'.$village->id.'/'.$encoded_name
-            ]);
-            $request_presentation->storeAs(
-                'public/villages/'.$village->id, $encoded_name
-            );
+            $presentation = Presentation::create(['path' => 'storage/villages/'.$village->id.'/'.$encoded_name]);
+            $request_presentation->storeAs('public/villages/'.$village->id, $encoded_name);
 
             $village->presentation_id = $presentation->id;
         }
@@ -69,22 +65,22 @@ class VillageController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
+     * @return VillageResource
      */
     public function show(int $id)
     {
-        return Village::with('photo')->find($id);
+        return VillageResource::make(Village::find($id));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
+     * @return VillageResource
      */
     public function edit(int $id)
     {
-        return Village::with('photo')->find($id);
+        return VillageResource::make(Village::find($id));
     }
 
     /**
@@ -106,13 +102,9 @@ class VillageController extends Controller
             $original_file_name = $request_photo->getClientOriginalName();
             $filename = Str::slug(pathinfo($original_file_name, PATHINFO_FILENAME));
             $ext = $request_photo->getClientOriginalExtension();
-            $photo = Photo::create([
-                'path' => "storage/villages/$village->id/$filename.$ext"
-            ]);
-            $request_photo->storeAs(
-                "public/villages/$village->id", "$filename.$ext"
-            );
 
+            $photo = Photo::create(['path' => "storage/villages/$village->id/$filename.$ext"]);
+            $request_photo->storeAs("public/villages/$village->id", "$filename.$ext");
             $village->photo_id = $photo->id;
         }
 
@@ -124,13 +116,9 @@ class VillageController extends Controller
             $original_file_name = $request_presentation->getClientOriginalName();
             $filename = Str::slug(pathinfo($original_file_name, PATHINFO_FILENAME));
             $ext = $request_presentation->getClientOriginalExtension();
-            $presentation = Presentation::create([
-                'path' => "storage/villages/$village->id/$filename.$ext"
-            ]);
-            $request_presentation->storeAs(
-                "public/villages/$village->id", "$filename.$ext"
-            );
 
+            $presentation = Presentation::create(['path' => "storage/villages/$village->id/$filename.$ext"]);
+            $request_presentation->storeAs("public/villages/$village->id", "$filename.$ext");
             $village->presentation_id = $presentation->id;
         }
 
@@ -143,7 +131,7 @@ class VillageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse|void
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         Storage::deleteDirectory("public/villages/$id");
         $village = Village::findOrFail($id);

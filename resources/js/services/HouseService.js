@@ -3,12 +3,22 @@ import { store } from '@/store';
 import transformUrl from 'transform-url';
 
 export default {
-    getHouses() {
+    getFilterAdditionalResources() {
         let apiUrl = import.meta.env.VITE_APP_URL +
-            store.state.Main.backendRoutes['houses.index']
+            transformUrl(store.state.Main.backendRoutes['houses.getFilterAdditionalResources'])
 
         return axios
             .get(apiUrl)
+            .then(response => response.data)
+            .catch(error => console.log(error))
+    },
+
+    filterHouses(payload) {
+        let apiUrl = import.meta.env.VITE_APP_URL +
+            transformUrl(store.state.Main.backendRoutes['houses.filter'])
+
+        return axios
+            .post(apiUrl, payload)
             .then(response => response.data)
             .catch(error => console.log(error))
     },
@@ -70,13 +80,6 @@ export default {
 
         return axios
             .delete(apiUrl)
-            .then(response => response.data)
-            .catch(error => console.log(error))
-    },
-
-    paginateHouses(link) {
-        return axios
-            .get(link)
             .then(response => response.data)
             .catch(error => console.log(error))
     },

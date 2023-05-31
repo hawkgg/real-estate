@@ -47,12 +47,13 @@ class UpdatePrices extends Command
     {
         $rates = CBR::getRates();
         if (!count($rates)) {
-            throw new Exception('Курсы валют не получены!');
+            throw new Exception('Error: currency rates have not been received.');
         }
         Rate::truncate();
+
         $rate = new Rate;
         $rate->currency()->associate(Currency::where('name', 'RUB')->first());
-        $rate->rate = 1;
+        $rate->val = 1;
         $rate->save();
 
         foreach($rates as $currency_label => $rate_val) {
@@ -65,10 +66,11 @@ class UpdatePrices extends Command
                 }
                 $rate = new Rate;
                 $rate->currency()->associate($currency);
-                $rate->rate = $rate_val;
+                $rate->val = $rate_val;
                 $rate->save();
             }
         }
+
         $rates = Rate::all();
         $houses = House::all();
         foreach($houses as $house) {
@@ -82,7 +84,7 @@ class UpdatePrices extends Command
                     $price->currency()->associate($rate->currency);
                     $price->house()->associate($house);
                 }
-                $price->val = $rate->rate / $default_rate->rate * $house->default_price;
+                $price->val = $rate->val / $default_rate->val * $house->default_price->val;
 
                 $price->save();
             }

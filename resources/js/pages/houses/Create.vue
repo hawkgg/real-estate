@@ -10,19 +10,34 @@
     </div>
     <div v-if="villages && estateTypes && currencies" class="row mt-3">
         <div class="col-md-7">
-            <form @submit.prevent="storeHouse($event.target)" method="post" action="" class="row g-3" enctype="multipart/form-data">
+            <form @submit.prevent="storeHouse($event.target)"
+                  method="post"
+                  action=""
+                  class="row g-3"
+                  enctype="multipart/form-data">
+
                 <div class="form-group">
                     <label for="house-name">Название:</label>
-                    <input type="text" class="form-control" id="house-name" required name="name" placeholder="Колотушкина">
+                    <input type="text"
+                           class="form-control"
+                           id="house-name"
+                           required
+                           name="name"
+                           placeholder="Колотушкина">
                 </div>
 
                 <div class="form-group d-flex gap-3 col-md-7">
                     <div class="col-7">
                         <div class="form-group">
                             <label for="house-address">Цена:</label>
-                            <input type="number" class="form-control" id="house-address" min="0" required name="price">
+                            <input type="number"
+                                   class="form-control"
+                                   id="house-address"
+                                   min="0"
+                                   required
+                                   name="price"
+                                   placeholder="5000000">
                         </div>
-
                     </div>
                     <div class="col-5">
                         <div class="form-group">
@@ -33,22 +48,37 @@
                                 </option>
                             </select>
                         </div>
-
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="house-name">Этажность:</label>
-                    <input type="number" class="form-control" id="house-floors" min="0" required name="floors" placeholder="10">
+                    <input type="number"
+                           class="form-control"
+                           id="house-floors"
+                           min="0"
+                           required
+                           name="floors"
+                           placeholder="10">
                 </div>
 
                 <div class="form-group">
                     <label for="house-name">Спальни:</label>
-                    <input type="number" class="form-control" id="house-bedrooms" min="0" required name="bedrooms" placeholder="3">
+                    <input type="number"
+                           class="form-control"
+                           id="house-bedrooms"
+                           min="0"
+                           required
+                           name="bedrooms"
+                           placeholder="3">
                 </div>
 
                 <div class="form-group">
-                    <label for="house-square" class="form-label">Площадь: {{ squareVal }}</label>
-                    <input type="range" class="form-range" id="house-square" name="square" v-model="squareVal">
+                    <label for="house-square" class="form-label">Площадь:</label>
+                    <input type="number"
+                           class="form-control"
+                           id="house-square"
+                           name="square"
+                           placeholder="50">
                 </div>
 
                 <div class="form-group">
@@ -71,7 +101,11 @@
 
                 <div class="form-group">
                     <label for="house-photo">Фотографии:</label>
-                    <input type="file" class="form-control" id="house-photo" name="photos[]" multiple accept=".jpg,.jpeg,.png">
+                    <input type="file"
+                           class="form-control"
+                           id="house-photo"
+                           name="photos[]"
+                           multiple accept=".jpg,.jpeg,.png">
                 </div>
 
                 <div class="form-group">
@@ -83,7 +117,7 @@
     <div v-else-if="loading" class="pt-5 mt-5 d-flex justify-content-center">
         <loader :loading="loading" :color="'#0d6efd'" :size="'40px'"></loader>
     </div>
-    <p v-else class="text-danger">Произошла ошибка! Пожалуйста, перезагрузите страницу или попробуйте позже.</p>
+    <p v-else class="mt-5 text-danger">Произошла ошибка. Пожалуйста, перезагрузите страницу или попробуйте позже.</p>
 </template>
 
 <script>
@@ -93,7 +127,6 @@ export default {
     name: "HousesCreate",
     data() {
         return {
-            squareVal: 50,
             loading: true,
             villages: null,
             estateTypes:  null,
@@ -104,15 +137,16 @@ export default {
         loader
     },
     async created() {
-        let response = await HouseService.createHouse()
-        this.villages = response.villages
-        this.estateTypes = response.estate_types
-        this.currencies = response.currencies
+        let res = await HouseService.createHouse()
+        this.villages = res.villages
+        this.estateTypes = res.estate_types
+        this.currencies = res.currencies
         this.loading = false
     },
     methods: {
         async storeHouse(form) {
             await HouseService.storeHouse(new FormData(form))
+            form.reset()
             this.$router.push({ name: 'houses.index' })
         }
     }

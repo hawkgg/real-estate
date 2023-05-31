@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('currency_id')->nullable();
             $table->foreign('currency_id')->references('id')->on('currencies');
 
-            $table->float('rate', 20, 13);
+            $table->float('val', 20, 13);
 
             $table->timestamps();
         });

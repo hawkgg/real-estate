@@ -26,9 +26,9 @@ class UpdateRequest extends FormRequest
         return [
             'name' => 'required|max:255|unique:villages,name,'.$this->village,
             'address' => 'required|max:255',
-            'square' => 'numeric|between:0,1000',
-            'phone' => 'numeric|nullable|max_digits:15',
-            'youtube_link' => 'nullable|max:255', // TODO: add |url
+            'square' => 'integer|between:0,1000',
+            'phone' => 'integer|nullable|max_digits:15',
+            'youtube_link' => 'nullable|max:255|url',
             'photo' => 'mimes:jpeg,jpg,png',
             'presentation' => 'mimes:pdf|max:20480',
         ];

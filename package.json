@@ -25,6 +25,7 @@
         "path": "^0.12.7",
         "swiper": "^9.3.2",
         "transform-url": "^2.0.0",
+        "vue-slider-component": "^4.1.0-beta.7",
         "vue-spinner": "^1.0.4"
     }
 }

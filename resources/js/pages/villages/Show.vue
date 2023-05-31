@@ -6,22 +6,20 @@
                              :to="{ name: 'villages.index' }">
                     <i class="fa-solid fa-chevron-left"></i> Назад
                 </router-link>
-                <td>
-                    <div class="p-2 d-flex gap-2">
-                        <router-link  v-if="user?.permissions.some(p => p.name === 'village.edit')"
-                                     :to="{ name: 'villages.edit', params: { village: village.id } }"
-                                      class="btn btn-primary">
-                            <i class="fa-solid fa-pencil me-1"></i> Редактировать
-                        </router-link>
+                <div class="d-flex gap-2 align-items-center">
+                    <router-link  v-if="user?.permissions.some(p => p.name === 'village.edit')"
+                                 :to="{ name: 'villages.edit', params: { village: village.id } }"
+                                  class="btn btn-primary">
+                        <i class="fa-solid fa-pencil me-1"></i> Редактировать
+                    </router-link>
 
-                        <a v-if="user?.permissions.some(p => p.name === 'village.delete')"
-                           @click.prevent="deleteVillage(village.id)"
-                           class="btn btn-danger"
-                           href="">
-                            <i class="fa-solid fa-trash"></i> Удалить
-                        </a>
-                    </div>
-                </td>
+                    <a v-if="user?.permissions.some(p => p.name === 'village.delete')"
+                       @click.prevent="deleteVillage(village.id)"
+                       class="btn btn-danger"
+                       href="">
+                        <i class="fa-solid fa-trash"></i> Удалить
+                    </a>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -43,7 +41,7 @@
 
                 <p v-if="village.presentation" class="my-2">
                     <b>Файл презентации (pdf)</b>:
-                    <a :href="village.presentation.path"
+                    <a :href="VITE_APP_URL + '/' + village.presentation.path"
                        target="_blank"
                        class="text-decoration-none">
                         {{ village.presentation.path }}
@@ -55,7 +53,7 @@
     <div v-else-if="loading" class="pt-5 mt-5 d-flex justify-content-center">
         <loader :loading="loading" :color="'#0d6efd'" :size="'40px'"></loader>
     </div>
-    <p v-else class="text-danger">Произошла ошибка! Пожалуйста, перезагрузите страницу или попробуйте позже.</p>
+    <p v-else class="mt-5 text-danger">Произошла ошибка. Пожалуйста, перезагрузите страницу или попробуйте позже.</p>
 </template>
 
 <script>
@@ -78,7 +76,8 @@ export default {
         }
     },
     async created() {
-        this.village = await VillageService.getVillage(this.$route.params.village)
+        let res = await VillageService.getVillage(this.$route.params.village)
+        this.village = res.data
         this.loading = false
         if (!this.village) {
             this.$router.push({ name: 'NotFound' })
@@ -90,7 +89,6 @@ export default {
             this.$router.push({ name: 'villages.index' })
         }
     },
-
 }
 </script>
 

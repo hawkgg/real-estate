@@ -4,7 +4,7 @@ namespace App\Http\Requests\Villages;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class FilterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,10 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:villages',
-            'address' => 'required|max:255',
-            'square' => 'integer|between:0,1000',
-            'phone' => 'integer|nullable|max_digits:15',
-            'youtube_link' => 'nullable|max:255|url',
-            'photo' => 'mimes:jpeg,jpg,png',
-            'presentation' => 'mimes:pdf|max:20480',
+            'name' => 'string|max:255',
+            'order_by' => 'string',
+            'order_dir' => 'string',
+            'page' => 'integer',
         ];
     }
 }

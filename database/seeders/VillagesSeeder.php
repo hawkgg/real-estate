@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Photo;
 use App\Models\Village;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class VillagesSeeder extends Seeder
@@ -23,14 +22,14 @@ class VillagesSeeder extends Seeder
                 'address' => 'Ларавельская топь',
                 'square' => '24',
                 'phone' => '79263543523',
-//                'youtube_link' => '',
+                'youtube_link' => 'https://youtube.com/watch?v=dQw4w9WgXcQ',
             ]),
             Village::create([
                 'name' => 'Перспективное будущее',
                 'address' => 'Фалконовая набережная',
                 'square' => '15',
                 'phone' => '79544634545',
-                'youtube_link' => 'https://www.youtube.com/watch?v=GFq6wH5JR2A',
+//                'youtube_link' => '',
             ]),
 
             Village::create([
@@ -38,7 +37,7 @@ class VillagesSeeder extends Seeder
                 'address' => 'Симфоническая область',
                 'square' => '80',
                 'phone' => '79055467351',
-//                'youtube_link' => '',
+                'youtube_link' => 'https://youtube.com/watch?v=dQw4w9WgXcQ',
             ]),
 
             Village::create([
@@ -46,20 +45,20 @@ class VillagesSeeder extends Seeder
                 'address' => 'Кохановское кладбище',
                 'square' => '10',
                 'phone' => '79265645312',
-                'youtube_link' => 'https://www.youtube.com/watch?v=GFq6wH5JR2A',
+//                'youtube_link' => '',
             ]),
 
             Village::create([
                 'name' => 'Освобождение',
-                'address' => 'Прерия джанго',
+                'address' => 'Прерия Джанго',
                 'square' => '35',
                 'phone' => '79043645641',
-                'youtube_link' => 'https://www.youtube.com/watch?v=GFq6wH5JR2A',
+                'youtube_link' => 'https://youtube.com/watch?v=dQw4w9WgXcQ',
             ]),
 
             Village::create([
                 'name' => 'Джаваево',
-                'address' => 'Спринговская слобода',
+                'address' => 'Спринговая слобода',
                 'square' => '67',
                 'phone' => '79634563446',
 //                'youtube_link' => '',
@@ -70,7 +69,7 @@ class VillagesSeeder extends Seeder
                 'address' => 'Дотнет парк',
                 'square' => '46',
                 'phone' => '79643675445',
-                'youtube_link' => 'https://www.youtube.com/watch?v=GFq6wH5JR2A',
+                'youtube_link' => 'https://youtube.com/watch?v=dQw4w9WgXcQ',
             ]),
 
             Village::create([

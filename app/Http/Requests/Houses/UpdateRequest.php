@@ -25,10 +25,10 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255|unique:houses,name,'.$this->house,
-            'price' => 'numeric|nullable|max:100000000',
+            'price' => 'numeric|nullable|between:0,100000000',
             'currency' => 'numeric',
-            'floors' => 'numeric|min:0|max:150|nullable',
-            'bedrooms' => 'numeric|min:0|max:100|nullable',
+            'floors' => 'numeric|nullable|between:0,150',
+            'bedrooms' => 'numeric|nullable|between:0,100',
             'square' => 'numeric|between:0,1000',
             'estate_type' => 'numeric',
             'village' => 'numeric',

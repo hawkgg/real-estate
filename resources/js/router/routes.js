@@ -13,7 +13,7 @@ import HousesEdit from '@/pages/houses/Edit.vue';
 import Login from '@/pages/auth/Login.vue';
 import NotFound from '@/pages/errors/NotFound.vue';
 
-const routes = [
+export const routes = [
     {
         path: '/login',
         component: Login,
@@ -129,5 +129,3 @@ const routes = [
         redirect: { name: 'NotFound' }
     },
 ]
-
-export { routes };

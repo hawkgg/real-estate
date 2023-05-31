@@ -17,10 +17,12 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('house_id')->nullable();
-            $table->foreign('house_id')->references('id')->on('houses')->onDelete('cascade');
+            $table->foreign('house_id')->references('id')->on('houses')
+                ->onDelete('cascade');
 
             $table->unsignedBigInteger('photo_id')->nullable();
-            $table->foreign('photo_id')->references('id')->on('photos')->onDelete('cascade');
+            $table->foreign('photo_id')->references('id')->on('photos')
+                ->onDelete('cascade');
         });
     }
 

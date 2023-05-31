@@ -5,10 +5,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-10">
-            <form @submit.prevent="search($event.target)" action="" class="row row-cols-lg-auto g-2">
-                <div class="col w-25">
-                    <input type="text" class="form-control" name="q" placeholder="Поиск по названию">
+        <div class="col-auto col-md-10">
+            <form @submit.prevent="search($event.target)" action="" class="row g-2">
+                <div class="col-8 col-md-6 col-lg-4">
+                    <input type="text"
+                           class="form-control"
+                           name="name"
+                           placeholder="Поиск по названию"
+                           :value="params.name">
                 </div>
                 <div class="col">
                     <input type="submit" class="btn btn-primary" value="Найти">
@@ -22,19 +26,23 @@
             </router-link>
         </div>
     </div>
-    <div v-if="villagesToShow" class="row mt-3">
-        <div class="col overflow-auto mb-3">
-            <table v-if="villagesToShow.length" class="table table-bordered table-hover mb-0">
+
+    <div v-if="loading" class="pt-5 mt-5 d-flex justify-content-center">
+        <loader :loading="loading" :color="'#0d6efd'" :size="'40px'"></loader>
+    </div>
+    <div v-else class="row mt-3">
+        <div v-if="villages.length" class="col overflow-auto mb-3">
+            <table class="table table-bordered table-hover mb-0">
                 <thead class="table-light">
                     <tr>
                         <th class="w-20">Фото</th>
                         <th>Название</th>
                         <th>Адрес</th>
                         <th>
-                            <a @click.prevent="sortBy('square', !sort.direction)"
+                            <a @click.prevent="sort('square')"
+                               :class="(params.order_by === 'square') ? params.order_dir : null"
                                href=""
-                               class="sortable"
-                               :class="getDirectionClassName">
+                               class="sortable">
                                 Площадь посёлка (гектар)
                             </a>
                         </th>
@@ -42,12 +50,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="village in villagesToShow" class="align-middle position-relative">
+                    <tr v-for="village in villages" class="align-middle position-relative">
                         <td>
                             <div class="village-image show-link-wrapper">
                                 <router-link class="show-link"
                                              :to="{ name: 'villages.show', params: { village: village.id } }">
-                                    <img v-if="village.photo" height="100" :src="VITE_APP_URL + village.photo.path" alt="">
+                                    <img v-if="village.photo"
+                                         :src="VITE_APP_URL + village.photo.path"
+                                         height="100"
+                                         alt="">
                                 </router-link>
                             </div>
                         </td>
@@ -89,73 +100,90 @@
                     </tr>
                 </tbody>
             </table>
-            <p v-else class="fw-bold">Не найдено.</p>
+            <pagination @paginate="paginate" :info="pagination"></pagination>
         </div>
-
-<!--    TODO: PAGINATION    -->
-<!--        <div class="d-flex justify-content-center">-->
-<!--            pagination-->
-<!--        </div>-->
-
+        <p v-else class="fw-bold">Не найдено.</p>
     </div>
-    <div v-else class="pt-5 mt-5 d-flex justify-content-center">
-        <loader :loading="loading" :color="'#0d6efd'" :size="'40px'"></loader>
-    </div>
-    <p v-if="!loading && !villages" class="text-danger">Произошла ошибка! Пожалуйста, перезагрузите страницу или попробуйте позже.</p>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import VillageService from "@/services/VillageService";
 import loader from 'vue-spinner/src/MoonLoader.vue';
+import Pagination from "@/components/Pagination.vue";
 export default {
     name: "VillagesIndex",
     components: {
-        loader
+        loader,
+        Pagination,
     },
     computed: {
         ...mapState('Main', ['user']),
-        getDirectionClassName(){
-            if (this.sort.direction === null) {
-                return '';
-            }
-            return this.sort.direction ? 'asc' : 'desc'
-        },
     },
     data() {
         return {
             VITE_APP_URL: import.meta.env.VITE_APP_URL,
-            villages: null,
-            villagesToShow: null,
-            sort: {
-                direction: null,
-                param: null,
+            villages: [],
+            params: {
+                name: null,
+                order_by: null,
+                order_dir: null,
+                page: null,
             },
+            pagination: [],
             loading: true,
         }
     },
-    async created() {
-        this.villagesToShow = this.villages = await VillageService.getVillages()
-        this.loading = false
+    created() {
+        const urlParams = new URLSearchParams(window.location.search)
+        this.params.name = urlParams.get('name')
+        this.params.order_by = urlParams.get('order_by')
+        this.params.order_dir = urlParams.get('order_dir')
+        this.params.page = urlParams.get('page')
+        this.filter()
     },
     methods: {
-        sortBy(param, direction) {
-            this.villagesToShow.sort((cur, next) => {
-                return direction ? (cur[param] > next[param]) : (cur[param] < next[param])
-            })
-            this.sort.direction = direction
-        },
         search(form) {
-            this.villagesToShow = this.villages.filter((item) => {
-                return item.name.toLowerCase().includes(form.q.value.toLowerCase())
-            })
+            if (!this.params.name && !form.name.value) {
+                return;
+            }
+            this.params.name = form.name.value
+            this.filter()
+        },
+        sort(field) {
+            if (this.params.order_by !== field) {
+                this.params.order_by = field
+                this.params.order_dir = 'asc'
+            } else {
+                if (this.params.order_dir === 'asc') {
+                    this.params.order_dir = 'desc'
+                } else {
+                    this.params.order_dir = 'asc'
+                }
+            }
+            this.filter()
+        },
+        paginate(page) {
+            this.params.page = page
+            this.filter()
         },
         async deleteVillage(id) {
             await VillageService.deleteVillage(id)
-            this.villagesToShow = this.villages = this.villages.filter((item) => item.id !== id)
-        }
-    },
+            this.filter()
+        },
+        async filter() {
+            this.loading = true
+            let filledParams = Object.fromEntries(
+                Object.entries(this.params).filter(([_, v]) => v !== null && v !== '')
+            )
+            this.$router.push({ query: { ...filledParams } })
 
+            let res = await VillageService.filterVillages(filledParams)
+            this.villages = res.data
+            this.pagination = res.meta
+            this.loading = false
+        },
+    },
 }
 </script>
 

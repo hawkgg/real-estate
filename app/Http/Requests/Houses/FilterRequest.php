@@ -4,7 +4,7 @@ namespace App\Http\Requests\Houses;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class FilterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,18 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:houses',
-            'price' => 'numeric|nullable|between:0,100000000',
-            'currency' => 'integer',
+            'name' => 'string|max:255',
+            'price_min' => 'numeric|nullable|between:0,100000000',
+            'price_max' => 'numeric|nullable|between:0,100000000',
+            'currency' => 'integer|nullable',
             'floors' => 'integer|nullable|between:0,150',
             'bedrooms' => 'integer|nullable|between:0,100',
-            'square' => 'integer|between:0,1000',
-            'estate_type' => 'integer',
-            'village' => 'integer',
-            'photos.*' => 'mimes:jpeg,jpg,png',
+            'square' => 'integer|nullable|between:0,1000',
+            'estate_type' => 'integer|nullable',
+            'village' => 'integer|nullable',
+            'order_by' => 'string',
+            'order_dir' => 'string',
+            'page' => 'integer',
         ];
     }
 }

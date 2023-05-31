@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             VillagesSeeder::class,
             CurrenciesSeeder::class,
             EstateTypesSeeder::class,
+            HousesSeeder::class,
         ]);
     }
 }

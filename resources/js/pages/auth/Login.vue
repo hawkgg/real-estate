@@ -65,6 +65,26 @@
                 </div>
             </div>
         </div>
+        <div class="row mt-4">
+            <div class="col-lg-6 offset-3">
+                <div class="row">
+                    <div class="col-lg-6 d-flex justify-content-center my-4">
+                        <div class="flex-grow-0">
+                            <p class="h4">Администратор</p>
+                            <p class="my-0"><code class="fs-6 text-dark">Логин: admin@gmail.com</code></p>
+                            <p class="my-0"><code class="fs-6 text-dark">Пароль: password</code></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 d-flex justify-content-center my-4">
+                        <div class="flex-grow-0">
+                            <p class="h4">Менеджер</p>
+                            <p class="my-0"><code class="fs-6 text-dark">Логин: manager@gmail.com</code></p>
+                            <p class="my-0"><code class="fs-6 text-dark">Пароль: password</code></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 

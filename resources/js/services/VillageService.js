@@ -3,12 +3,12 @@ import { store } from '@/store';
 import transformUrl from 'transform-url';
 
 export default {
-    getVillages() {
+    filterVillages(payload) {
         let apiUrl = import.meta.env.VITE_APP_URL +
-            store.state.Main.backendRoutes['villages.index']
+            store.state.Main.backendRoutes['villages.filter']
 
         return axios
-            .get(apiUrl)
+            .post(apiUrl, payload)
             .then(response => response.data)
             .catch(error => console.log(error))
     },
@@ -60,13 +60,6 @@ export default {
 
         return axios
             .delete(apiUrl)
-            .then(response => response.data)
-            .catch(error => console.log(error))
-    },
-
-    paginateVillages(link) {
-        return axios
-            .get(link)
             .then(response => response.data)
             .catch(error => console.log(error))
     },
