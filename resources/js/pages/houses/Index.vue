@@ -263,6 +263,7 @@ import loader from 'vue-spinner/src/MoonLoader.vue';
 import Pagination from "@/components/Pagination.vue";
 import VueSlider from 'vue-slider-component';
 import 'vue-slider-component/theme/default.css';
+
 export default {
     name: "HousesIndex",
     components: {

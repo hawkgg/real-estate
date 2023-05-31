@@ -7,8 +7,7 @@
 
 <script>
 import Navbar from './components/Navbar.vue';
-import {mapMutations, mapState} from 'vuex';
-import axios from "axios";
+import { mapMutations } from 'vuex';
 
 export default {
     name: "App",

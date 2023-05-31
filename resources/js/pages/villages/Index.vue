@@ -111,6 +111,7 @@ import { mapState } from 'vuex';
 import VillageService from "@/services/VillageService";
 import loader from 'vue-spinner/src/MoonLoader.vue';
 import Pagination from "@/components/Pagination.vue";
+
 export default {
     name: "VillagesIndex",
     components: {

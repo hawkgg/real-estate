@@ -22,7 +22,7 @@ class HousesSeeder extends Seeder
         $house = House::create([
             'name' => 'Коттедж дряхлый',
             'floors' => '3',
-            'bedrooms' => '17',
+            'bedrooms' => '2',
             'square' => '250',
         ]);
         $house->village_id = 6;
@@ -42,14 +42,14 @@ class HousesSeeder extends Seeder
         $house = House::create([
             'name' => 'Таунхаус элитный',
             'floors' => '2',
-            'bedrooms' => '6',
+            'bedrooms' => '3',
             'square' => '300',
         ]);
         $house->village_id = 3;
         $house->default_currency_id = 1;
         $house->estate_type_id = 2;
         $price = Price::create([
-            'val' => 10500000,
+            'val' => 100500000,
         ]);
         $price->currency()->associate(Currency::find(1));
         $price->house()->associate($house);
