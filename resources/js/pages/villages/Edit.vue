@@ -102,6 +102,7 @@
 <script>
 import VillageService from "@/services/VillageService";
 import loader from 'vue-spinner/src/MoonLoader.vue';
+
 export default {
     name: "VillagesEdit",
     components: {

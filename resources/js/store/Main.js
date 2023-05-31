@@ -27,9 +27,8 @@ export const Main = {
         },
         async login({ state, commit }, form) {
             let response = await AuthService.login(new FormData(form))
-            // console.log(response)
             commit('SET_USER', response)
-            router.push({name: 'home'})
+            router.push({ name: 'home' })
         }
     }
 }

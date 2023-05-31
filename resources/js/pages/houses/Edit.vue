@@ -136,6 +136,7 @@
 <script>
 import HouseService from "@/services/HouseService";
 import loader from 'vue-spinner/src/MoonLoader.vue';
+
 export default {
     name: "HousesEdit",
     components: {
