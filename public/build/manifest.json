@@ -24,7 +24,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf"
   },
   "resources/js/app.js": {
-    "file": "assets/app.0a2b2d89.js",
+    "file": "assets/app.47856fa9.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
