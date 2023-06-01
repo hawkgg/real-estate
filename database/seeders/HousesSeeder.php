@@ -27,7 +27,7 @@ class HousesSeeder extends Seeder
         ]);
         $house->village_id = 6;
         $house->default_currency_id = 1;
-        $house->estate_type_id = 3;
+        $house->estate_type_id = 2;
         $price = Price::create([
             'val' => 400000,
         ]);
@@ -47,7 +47,7 @@ class HousesSeeder extends Seeder
         ]);
         $house->village_id = 3;
         $house->default_currency_id = 1;
-        $house->estate_type_id = 2;
+        $house->estate_type_id = 3;
         $price = Price::create([
             'val' => 100500000,
         ]);
