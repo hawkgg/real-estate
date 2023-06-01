@@ -3,10 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Classes\Services\CBR;
-use App\Models\Currency;
-use App\Models\House;
-use App\Models\Price;
-use App\Models\Rate;
+use App\Models\{Currency, House, Price, Rate};
 use Exception;
 use Illuminate\Console\Command;
 
